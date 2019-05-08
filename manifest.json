@@ -1,0 +1,24 @@
+﻿{
+	"manifest_version": 2,
+	"name": "taobao.com delivery information",
+	"version": "0.0.1",
+	"background": { "scripts": ["jquery-2.0.0.min.js", "background.js"] },
+	"page_action": {
+		"default_icon": {
+			"19": "query_19.png",
+			"38": "query_38.png"
+		},
+		"default_title": "taobao.com delivery information", // shown in tooltip
+		"default_popup": "popup.html"
+	},
+	"permissions" : ["tabs","http://localhost/"],
+	"content_scripts":[{
+		"matches":[
+			"https://www.taobao.com/*",
+			"https://www.tmall.com/*",
+			"https://buyertrade.taobao.com/*",
+			"https://detail.i56.taobao.com/*"
+		],
+		"js":["jquery-2.0.0.min.js", "content_script.js"]
+	}]
+}
