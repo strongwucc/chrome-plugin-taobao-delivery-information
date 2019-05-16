@@ -1,4 +1,12 @@
 $('#query-orders').click(function () {
+
+    var bg = chrome.extension.getBackgroundPage();
+
+    if (bg.logined === false) {
+        alert('请先登录')
+        return false
+    }
+
     var username = $('#username').val()
     var password = $('#password').val()
 
@@ -7,7 +15,6 @@ $('#query-orders').click(function () {
         return false
     }
 
-    var bg = chrome.extension.getBackgroundPage();
     bg.username = username
     bg.password = password
     bg.queryOrders();

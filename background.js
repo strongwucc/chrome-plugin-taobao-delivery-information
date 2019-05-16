@@ -1,4 +1,5 @@
 ﻿var urls = [];
+var logined = true;
 var username = '';
 var password = '';
 function getDomainFromUrl(url){
@@ -59,6 +60,10 @@ function checkForValidUrl(tabId, changeInfo, tab) {
 	}
     if(getDomainFromUrl(tab.url).toLowerCase()=="www.tmall.com"){
         chrome.pageAction.show(tabId);
+        sendMessageToContentScript({cmd:'check_login', value:'check login'}, function(response)
+        {
+            console.log('来自content的回复：'+response);
+        });
     }
     if(getDomainFromUrl(tab.url).toLowerCase()=="buyertrade.taobao.com" && tab.url === 'https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&tabCode=waitConfirm'){
         sendMessageToContentScript({cmd:'query_order', value:'auto query order'}, function(response)
@@ -106,4 +111,10 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendRequest){
             queryDelivery();
         }
 	}
+    if (request.type === 'go_login') {
+        logined = false
+    }
+    if (request.type === 'logined') {
+        logined = true
+    }
 });

@@ -9,6 +9,18 @@
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse)
 {
+    if(request.cmd == 'check_login'){
+        if($('#login-info .sn-login').length > 0){
+            chrome.runtime.sendMessage({type: 'go_login'}, function(response) {
+                console.log('收到来自后台的回复：' + response);
+            });
+        } else {
+            chrome.runtime.sendMessage({type: 'logined'}, function(response) {
+                console.log('收到来自后台的回复：' + response);
+            });
+        }
+    }
+
     // console.log(sender.tab ?"from a content script:" + sender.tab.url :"from the extension");
     if(request.cmd == 'query_order'){
         sendResponse('我收到了你自动查询订单的消息！');
