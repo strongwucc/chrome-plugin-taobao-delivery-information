@@ -17,7 +17,8 @@
 			"https://www.taobao.com/*",
 			"https://www.tmall.com/*",
 			"https://buyertrade.taobao.com/*",
-			"https://detail.i56.taobao.com/*"
+			"https://detail.i56.taobao.com/*",
+			"https://login.taobao.com/*"
 		],
 		"js":["jquery-2.0.0.min.js", "content_script.js"]
 	}]

@@ -1,5 +1,15 @@
 $('#query-orders').click(function () {
+    var username = $('#username').val()
+    var password = $('#password').val()
+
+    if (!username || !password) {
+        alert('请输入淘宝账号和密码')
+        return false
+    }
+
     var bg = chrome.extension.getBackgroundPage();
+    bg.username = username
+    bg.password = password
     bg.queryOrders();
 });
 

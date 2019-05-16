@@ -1,4 +1,6 @@
 ﻿var urls = [];
+var username = '';
+var password = '';
 function getDomainFromUrl(url){
 	var host = "null";
 	if(typeof url == "undefined" || null == url)
@@ -21,8 +23,8 @@ function getCurrentTabId(callback)
 
 function queryOrders() {
     getCurrentTabId(function (tabId) {
-        // chrome.tabs.update(tabId, {url: 'https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&tabCode=waitConfirm'});
-        chrome.tabs.update(tabId, {url: 'https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm'});
+        chrome.tabs.update(tabId, {url: 'https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&tabCode=waitConfirm'});
+        // chrome.tabs.update(tabId, {url: 'https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm'});
     })
 }
 
@@ -58,7 +60,7 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     if(getDomainFromUrl(tab.url).toLowerCase()=="www.tmall.com"){
         chrome.pageAction.show(tabId);
     }
-    if(getDomainFromUrl(tab.url).toLowerCase()=="buyertrade.taobao.com"){
+    if(getDomainFromUrl(tab.url).toLowerCase()=="buyertrade.taobao.com" && tab.url === 'https://buyertrade.taobao.com/trade/itemlist/list_bought_items.htm?action=itemlist/BoughtQueryAction&event_submit_do_query=1&tabCode=waitConfirm'){
         sendMessageToContentScript({cmd:'query_order', value:'auto query order'}, function(response)
         {
             console.log('来自content的回复：'+response);
@@ -66,6 +68,12 @@ function checkForValidUrl(tabId, changeInfo, tab) {
     }
     if(getDomainFromUrl(tab.url).toLowerCase()=="detail.i56.taobao.com"){
         sendMessageToContentScript({cmd:'query_delivery', url:tab.url}, function(response)
+        {
+            console.log('来自content的回复：'+response);
+        });
+    }
+    if(getDomainFromUrl(tab.url).toLowerCase()=="login.taobao.com"){
+        sendMessageToContentScript({cmd:'login', username:username, password:password}, function(response)
         {
             console.log('来自content的回复：'+response);
         });
@@ -85,7 +93,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendRequest){
                 url: "http://116.62.116.155:81/shopmall/plugins/delivery.php",
                 cache: false,
                 type: "POST",
-                data: JSON.stringify({tabao_id:request.orderId,logi_id:request.deliveryNo}),
+                data: JSON.stringify({tabao_id:request.orderId,logi_id:request.deliveryNo,logi_name:request.deliveryName}),
                 dataType: "json"
             }).done(function(msg) {
                 console.log(msg)
