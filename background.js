@@ -38,7 +38,7 @@ function queryDelivery() {
 	} else {
 		setTimeout(function () {
             queryOrders()
-        }, 3600000)
+        }, 60000)
 	}
 
 }
